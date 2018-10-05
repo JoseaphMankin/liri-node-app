@@ -1,9 +1,10 @@
 require("dotenv").config();
 
 
-//REQUIRES: Grab the Request & Moment packages...
+//REQUIRES: Grab the Request & Moment and FS packages...
 let request = require("request");
 let moment = require('moment');
+let fs = require("fs");
 
 //The Spotify variables and requiring the keys
 let Spotify = require('node-spotify-api');
@@ -53,15 +54,28 @@ function movieIt() {
     request("http://www.omdbapi.com/?y=&plot=short&apikey=trilogy&t=" + movie, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             let data = JSON.parse(body);
+            let movieObj = {
+                Title: data.Title,
+                Year: data.Year,
+                IMDBRating: data.imdbRating,
+                RT: data.Ratings[1].Value,
+                Country: data.Country,
+                Language: data.Language,
+                Plot: data.Plot,
+                Actors: data.Actors, 
+            }
 
-            console.log("Title: " + data.Title);
-            console.log("Year: " + data.Year);
-            console.log("IMDB Rating: " + data.imdbRating);
-            console.log("Rotten Tomatoes Rating: " + data.Ratings[1].Value);
-            console.log("Country: " + data.Country);
-            console.log("Language: " + data.Language);
-            console.log("Plot: " + data.Plot);
-            console.log("Actors: " + data.Actors);
+            console.log(movieObj);
+            logIt(JSON.stringify(movieObj));
+
+            // console.log("Title: " + data.Title);
+            // console.log("Year: " + data.Year);
+            // console.log("IMDB Rating: " + data.imdbRating);
+            // console.log("Rotten Tomatoes Rating: " + data.Ratings[1].Value);
+            // console.log("Country: " + data.Country);
+            // console.log("Language: " + data.Language);
+            // console.log("Plot: " + data.Plot);
+            // console.log("Actors: " + data.Actors);
         }
     });
 }
@@ -127,3 +141,13 @@ function spotifyIt() {
 function doIt() {
     console.log("Word Up")
 }
+
+//Function for writing to the log
+
+function logIt(response){
+    fs.appendFile('log.txt',response + "\n", function (err) {
+        if (err) throw err;
+        console.log("Data Logged Sucessfully")
+    })
+}
+
