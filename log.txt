@@ -43,3 +43,13 @@ My Tweets: [31mTweet #2: [39m[32mThen I made this one[39m
 My Tweets: [31mTweet #3: [39m[32mTesting for Bootcamp[39m
 [34mCreated at: Sun Oct 07 17:12:09 +0000 2018[39m
 Spotify Search: {"Artist":"\"Backstreet Boys\"","Song":"\"I Want It That Way\"","Preview":"\"https://p.scdn.co/mp3-preview/e72a05dc3f69c891e3390c3ceaa77fad02f6b5f6?cid=bed425c2480e4624a495fb019ae3d995\"","Album":"\"The Hits--Chapter One\""}
+Movie Search: {"Title":"Ghostbusters","Year":"1984","IMDBRating":"7.8","RT":"97%","Country":"USA","Language":"English","Plot":"Three former parapsychology professors set up shop as a unique ghost removal service.","Actors":"Bill Murray, Dan Aykroyd, Sigourney Weaver, Harold Ramis"}
+Concert Search: {"Artist":["Metallica"],"Venue":"Zilker Metropolitan Park","Location":"Austin","Date":"10/13/2018"}
+Spotify Search: {"Artist":"\"Spoon\"","Song":"\"Hot Thoughts\"","Preview":"\"https://p.scdn.co/mp3-preview/f4351e15010139e1312b732095f40e64e15346a0?cid=bed425c2480e4624a495fb019ae3d995\"","Album":"\"Hot Thoughts\""}
+My Tweets: [31mTweet #1: [39m[32mBut they all were lame compared to THIS ONE![39m
+[34mCreated at: Sun Oct 07 17:14:05 +0000 2018[39m
+My Tweets: [31mTweet #2: [39m[32mThen I made this one[39m
+[34mCreated at: Sun Oct 07 17:13:42 +0000 2018[39m
+My Tweets: [31mTweet #3: [39m[32mTesting for Bootcamp[39m
+[34mCreated at: Sun Oct 07 17:12:09 +0000 2018[39m
+Spotify Search: {"Artist":"\"Backstreet Boys\"","Song":"\"I Want It That Way\"","Preview":"\"https://p.scdn.co/mp3-preview/e72a05dc3f69c891e3390c3ceaa77fad02f6b5f6?cid=bed425c2480e4624a495fb019ae3d995\"","Album":"\"The Hits--Chapter One\""}

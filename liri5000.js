@@ -85,8 +85,6 @@ inquirer
     });
 
 
-
-
 //FUNCTIONS 
 //All the functions plugged into the switch logic above
 
