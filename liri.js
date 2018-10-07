@@ -77,7 +77,7 @@ function movieIt() {
 
             //... so it's easier to just send one thing to the console.log and the logIt function
 
-            console.log(columnify(movieObj, { columns: ['DATA', 'VALUE'] }))
+            console.log(chalk.green(columnify(movieObj, { columns: ['DATA', 'VALUE'] })));
 
             // console.log(movieObj);
             logIt("Movie Search: " + JSON.stringify(movieObj));
@@ -113,7 +113,7 @@ function concertIt() {
             }
 
             //... so it's easier to just send one thing to the console.log and the logIt function
-            console.log(concertObj);
+            console.log(chalk.green(columnify(concertObj, { columns: ['DATA', 'VALUE'] })));
             logIt("Concert Search: " + JSON.stringify(concertObj));
 
             // console.log("Venue Name: " + data[0].venue.name);
@@ -145,7 +145,7 @@ function spotifyIt() {
                 Album: JSON.stringify(theSign.album.name),
             }
 
-            console.log(columnify(theSignObj, { columns: ['DATA', 'VALUE'] }))
+            console.log(chalk.green(columnify(theSignObj, { columns: ['DATA', 'VALUE'] })));
             logIt("Spotify Search: " + JSON.stringify(theSignObj));
 
             // console.log("Artist: " + JSON.stringify(theSign.album.artists[0].name));
@@ -171,7 +171,7 @@ function spotifyIt() {
                 Album: JSON.stringify(song.album.name),
             }
 
-            console.log(columnify(songObj, { columns: ['DATA', 'VALUE'] }))
+            console.log(chalk.green(columnify(songObj, { columns: ['DATA', 'VALUE'] })));
             logIt("Spotify Search: " + JSON.stringify(songObj));
 
             // console.log("Artist: " + JSON.stringify(song.album.artists[0].name));
