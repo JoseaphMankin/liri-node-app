@@ -7,6 +7,7 @@ let moment = require('moment');
 let chalk = require('chalk');
 let fs = require("fs");
 let columnify = require('columnify');
+let inquirer = require('inquirer');
 
 
 //The Spotify variables and requiring the keys
@@ -20,34 +21,116 @@ let twitter = new Twitter(keys.twitter)
 // Using position argv[2] for "app name" and slice to start request at position 3 of the array 
 //(Since argv positions 0 and 1 are NODE & liri.js)
 
-let app = process.argv[2];
-let args = process.argv.slice(3);
+let app = "";
+let args = [];
 
-//LOGIC: 
-//The 5 app calls you can perform. If you leave app blank, "default" lists your available options.
+//Inquirer upgrade to standard Liri
+inquirer
+    .prompt([
+        // Here we create a basic text prompt.
+        // {
+        //   type: "input",
+        //   message: "What is your name?",
+        //   name: "username"
+        // },
+        // Here we create a basic password-protected text prompt.
+        // {
+        //   type: "password",
+        //   message: "Set your password",
+        //   name: "password"
+        // },
+        // Here we give the user a list to choose from.
+        {
+            type: "list",
+            message: "What Would You Like To Do?",
+            choices: ["Movie Search", "Spotify Song Search", "Get My Tweets", "Concert Search", "Do What It Says"],
+            name: "app"
+        },
+        // Here we ask the user to confirm.
+        // {
+        //   type: "confirm",
+        //   message: "Are you sure:",
+        //   name: "confirm",
+        //   default: true
+        // }
+    ])
+    .then(function (inquirerResponse) {
+        
+        // If the inquirerResponse confirms, we displays the inquirerResponse's username and pokemon from the answers.
+        if (inquirerResponse.app === "Movie Search") {
+            app = "movie-this";
+            console.log("Cool, let's look for a movie");
+            getSearch();
+        }
+        else if (inquirerResponse.app === "Spotify Song Search") {
+            app = "spotify-this-song";
+            console.log("Cool, let's look for a song")
+            getSearch();
+        }
+        else if (inquirerResponse.app === "Get My Tweets") {
+            app = "my-tweets";
+            console.log("Cool, let's look at your latest Tweets");
+            getSearch();
+        }
+        else if (inquirerResponse.app === "Concert Search") {
+            app = "concert-this";
+            console.log("Cool, let's look for a Concert");
+            getSearch();
+        }
+        else if (inquirerResponse.app === "Do What It Says") {
+            app = "do-what-it-says";
+            console.log("Cool, let's see what command is in Random.Txt");
+            getSearch();
+        }
+    });
 
-switch (app) {
-    case "movie-this":
-        movieIt();
-        break;
-    case "concert-this":
-        concertIt();
-        break;
-    case "spotify-this-song":
-        spotifyIt();
-        break;
-    case "my-tweets":
-        tweetIt();
-        break;
-    case "do-what-it-says":
-        doIt();
-        break;
-    default:
-        console.log('Your "Node Liri" Options are: movie-this, concert-this, spotify-this-song, my-tweets, do-what-it-says')
-}
+
+
 
 //FUNCTIONS 
 //All the functions plugged into the switch logic above
+
+function getSearch() {
+
+    if (app === "my-tweets" || app === "do-what-it-says" ){
+        dispatch();
+    } else{
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "What should we look for?",
+                name: "search"
+            },
+        ]).then(function (inquirerResponse) {
+            args.push(inquirerResponse.search);
+            dispatch();
+        });
+    }
+}
+
+function dispatch(){
+
+    switch (app) {
+        case "movie-this":
+            movieIt();
+            break;
+        case "concert-this":
+            concertIt();
+            break;
+        case "spotify-this-song":
+            spotifyIt();
+            break;
+        case "my-tweets":
+            tweetIt();
+            break;
+        case "do-what-it-says":
+            doIt();
+            break;
+        default:
+            console.log('Your "Node Liri" Options are: movie-this, concert-this, spotify-this-song, my-tweets, do-what-it-says')
+    }
+}
 
 function movieIt() {
     //Join back args with a + in the middle, since that's the format OMDB uses

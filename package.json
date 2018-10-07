@@ -18,9 +18,14 @@
   },
   "homepage": "https://github.com/JoseaphMankin/liri-node-app#readme",
   "dependencies": {
+    "chalk": "^2.4.1",
+    "columnify": "^1.5.4",
     "dotenv": "^6.0.0",
+    "inquirer": "^6.2.0",
     "moment": "^2.22.2",
     "node-spotify-api": "^1.0.7",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "table": "^5.1.0",
+    "twitter": "^1.7.1"
   }
 }
