@@ -1,8 +1,8 @@
 # liri-node-app
 LIRI Bot (Node Assignment)
 
-![Alt text](images/liriScreen1.jpg?raw=true "liri Screenshot1")
-![Alt text](images/liriScreen2.jpg?raw=true "liri Screenshot2")
+![Alt text](images/liriScreen1.png?raw=true "liri Screenshot1")
+![Alt text](images/liriScreen2.png?raw=true "liri Screenshot2")
 
 
 
