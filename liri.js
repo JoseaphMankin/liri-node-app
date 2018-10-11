@@ -43,7 +43,7 @@ switch (app) {
         doIt();
         break;
     default:
-        console.log('Your "Node Liri" Options are: movie-this, concert-this, spotify-this-song, my-tweets, do-what-it-says')
+        console.log(chalk.red('Your "Node Liri" Options are: ') + chalk.green("movie-this, concert-this, spotify-this-song, my-tweets, do-what-it-says"))
 }
 
 //FUNCTIONS 
@@ -77,9 +77,13 @@ function movieIt() {
 
             //... so it's easier to just send one thing to the console.log and the logIt function
 
-            console.log(chalk.green(columnify(movieObj, { columns: ['DATA', 'VALUE'] })));
+            console.log(chalk.green(columnify(movieObj, {
+                showHeaders: false,
+                // columns: ['DATA', 'VALUE'], 
+                maxWidth: 75
+            })));
 
-            // console.log(movieObj);
+            // console.log(movieObj) - Preferred doing this instead of that big block of logs below
             logIt("Movie Search: " + JSON.stringify(movieObj));
 
             // console.log("Title: " + data.Title);
@@ -98,6 +102,7 @@ function concertIt() {
 
     //Join back title with + in the middle, since that's the format BandsInTown uses
     let artist = args.join("+");
+    let artistDisp = args.join(" ")
 
 
     // Request w/ specified parts of the returned JSON object
@@ -106,20 +111,18 @@ function concertIt() {
             let data = JSON.parse(body);
 
             let concertObj = {
-                Artist: args,
+                Artist: artistDisp,
                 Venue: data[0].venue.name,
                 Location: data[0].venue.city,
                 Date: moment(data[0].datetime).format("MM/DD/YYYY"),
             }
 
             //... so it's easier to just send one thing to the console.log and the logIt function
-            console.log(chalk.green(columnify(concertObj, { columns: ['DATA', 'VALUE'] })));
+            console.log(chalk.green(columnify(concertObj, {
+                showHeaders: false,
+                maxWidth: 75
+            })));
             logIt("Concert Search: " + JSON.stringify(concertObj));
-
-            // console.log("Venue Name: " + data[0].venue.name);
-            // console.log("Venue Location: " + data[0].venue.city);
-            //Moment package used to tidy up datetime key
-            // console.log("Date of Event: " + moment(data[0].datetime).format("MM/DD/YYYY"));
 
         }
     });
@@ -145,13 +148,12 @@ function spotifyIt() {
                 Album: JSON.stringify(theSign.album.name),
             }
 
-            console.log(chalk.green(columnify(theSignObj, { columns: ['DATA', 'VALUE'] })));
+            console.log(chalk.green(columnify(theSignObj, {
+                showHeaders: false,
+                maxWidth: 75
+            })));
             logIt("Spotify Search: " + JSON.stringify(theSignObj));
-
-            // console.log("Artist: " + JSON.stringify(theSign.album.artists[0].name));
-            // console.log("Song Name: " + JSON.stringify(theSign.name));
-            // console.log("Preview Link: " + JSON.stringify(theSign.preview_url));
-            // console.log("Album: " + JSON.stringify(theSign.album.name));
+   
         });
 
     } else {
@@ -171,13 +173,13 @@ function spotifyIt() {
                 Album: JSON.stringify(song.album.name),
             }
 
-            console.log(chalk.green(columnify(songObj, { columns: ['DATA', 'VALUE'] })));
+            console.log(chalk.green(columnify(songObj, {
+                showHeaders: false,
+                maxWidth: 75
+            })));
             logIt("Spotify Search: " + JSON.stringify(songObj));
 
-            // console.log("Artist: " + JSON.stringify(song.album.artists[0].name));
-            // console.log("Song Name: " + JSON.stringify(song.name));
-            // console.log("Preview Link: " + JSON.stringify(song.preview_url));
-            // console.log("Album: " + JSON.stringify(song.album.name));
+            
         });
     }
 

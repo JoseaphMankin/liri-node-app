@@ -1,7 +1,8 @@
 # liri-node-app
 LIRI Bot (Node Assignment)
 
-![Alt text](images/liriscreenshot.jpg?raw=true "liri Screenshot")
+![Alt text](images/liriScreen1.jpg?raw=true "liri Screenshot1")
+![Alt text](images/liriScreen2.jpg?raw=true "liri Screenshot2")
 
 
 
@@ -18,6 +19,6 @@ LIRI Bot (Node Assignment)
 - What is the direct link to the project?
   * The code is hosted here: [liri-node-app](https://joseaphmankin.github.io/liri-node-app).
 - What is the direct link to the demo?
-  * A Video Demo is hosted here: [liri-node-demo](https://drive.google.com/file/d/1dRsZ-v-D5G8urIBtb5oqopSPye-CqmMZ/view).
+  * A Video Demo is hosted here: [liri-node-demo](https://drive.google.com/file/d/1zOLDKcpyslBKwXqp8GdZu_FaBfvU4208/view).
 
   

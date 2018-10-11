@@ -8,6 +8,7 @@ let chalk = require('chalk');
 let fs = require("fs");
 let columnify = require('columnify');
 let inquirer = require('inquirer');
+let weather = require('weather-js');
 
 
 //The Spotify variables and requiring the keys
@@ -18,96 +19,94 @@ let spotify = new Spotify(keys.spotify);
 let twitter = new Twitter(keys.twitter)
 
 //ARGUMENTS: 
-// Using position argv[2] for "app name" and slice to start request at position 3 of the array 
+// Using position argv[2] for "app name", empty now, to be filled from Inquirer
 //(Since argv positions 0 and 1 are NODE & liri.js)
 
 let app = "";
 let args = [];
 
 //Inquirer upgrade to standard Liri
-inquirer
-    .prompt([
-        // Here we create a basic text prompt.
-        // {
-        //   type: "input",
-        //   message: "What is your name?",
-        //   name: "username"
-        // },
-        // Here we create a basic password-protected text prompt.
-        // {
-        //   type: "password",
-        //   message: "Set your password",
-        //   name: "password"
-        // },
-        // Here we give the user a list to choose from.
-        {
-            type: "list",
-            message: "What Would You Like To Do?",
-            choices: ["Movie Search", "Spotify Song Search", "Get My Tweets", "Concert Search", "Do What It Says"],
-            name: "app"
-        },
-        // Here we ask the user to confirm.
-        // {
-        //   type: "confirm",
-        //   message: "Are you sure:",
-        //   name: "confirm",
-        //   default: true
-        // }
-    ])
-    .then(function (inquirerResponse) {
-        
-        // If the inquirerResponse confirms, we displays the inquirerResponse's username and pokemon from the answers.
-        if (inquirerResponse.app === "Movie Search") {
-            app = "movie-this";
-            console.log("Cool, let's look for a movie");
-            getSearch();
-        }
-        else if (inquirerResponse.app === "Spotify Song Search") {
-            app = "spotify-this-song";
-            console.log("Cool, let's look for a song")
-            getSearch();
-        }
-        else if (inquirerResponse.app === "Get My Tweets") {
-            app = "my-tweets";
-            console.log("Cool, let's look at your latest Tweets");
-            getSearch();
-        }
-        else if (inquirerResponse.app === "Concert Search") {
-            app = "concert-this";
-            console.log("Cool, let's look for a Concert");
-            getSearch();
-        }
-        else if (inquirerResponse.app === "Do What It Says") {
-            app = "do-what-it-says";
-            console.log("Cool, let's see what command is in Random.Txt");
-            getSearch();
-        }
-    });
 
+function mainPrompt() {
+    inquirer
+        .prompt([
+
+            // Here we give the user a list to choose from.
+            {
+                type: "list",
+                message: "What Would You Like To Do?",
+                choices: ["Movie Search", "Spotify Song Search", "Get My Tweets", "Concert Search", "Do What It Says", "Get the Weather"],
+                name: "app"
+            },
+        ])
+        .then(function (inquirerResponse) {
+
+            // If the inquirerResponse confirms, we displays the inquirerResponse's username and pokemon from the answers.
+            if (inquirerResponse.app === "Movie Search") {
+                app = "movie-this";
+                console.log("Cool, let's look for a movie");
+                getSearch();
+            }
+            else if (inquirerResponse.app === "Spotify Song Search") {
+                app = "spotify-this-song";
+                console.log("Cool, let's look for a song")
+                getSearch();
+            }
+            else if (inquirerResponse.app === "Get My Tweets") {
+                app = "my-tweets";
+                console.log("Cool, let's look at your latest Tweets");
+                getSearch();
+            }
+            else if (inquirerResponse.app === "Concert Search") {
+                app = "concert-this";
+                console.log("Cool, let's look for a Concert");
+                getSearch();
+            }
+            else if (inquirerResponse.app === "Do What It Says") {
+                app = "do-what-it-says";
+                console.log("Cool, let's see what command is in Random.Txt");
+                getSearch();
+            }
+            else if (inquirerResponse.app === "Get the Weather") {
+                console.log("Cool, Let's check the weather");
+                askWhereToGo();
+            }
+
+        });
+}
+
+//Kicking off program calling mainPrompt above
+mainPrompt();
 
 //FUNCTIONS 
 //All the functions plugged into the switch logic above
 
 function getSearch() {
+    args = [];
 
-    if (app === "my-tweets" || app === "do-what-it-says" ){
+    if (app === "my-tweets" || app === "do-what-it-says") {
         dispatch();
-    } else{
-    inquirer
-        .prompt([
-            {
-                type: "input",
-                message: "What should we look for?",
-                name: "search"
-            },
-        ]).then(function (inquirerResponse) {
-            args.push(inquirerResponse.search);
-            dispatch();
-        });
+    } else {
+        inquirer
+            .prompt([
+                {
+                    type: "input",
+                    message: "What should we look for?",
+                    name: "search"
+                },
+            ]).then(function (inquirerResponse) {
+                if (inquirerResponse.search === ""){
+                    args = [];
+                    dispatch();
+                }else{
+                args.push(inquirerResponse.search);
+                dispatch();
+            }
+            });
     }
 }
 
-function dispatch(){
+function dispatch() {
 
     switch (app) {
         case "movie-this":
@@ -158,19 +157,15 @@ function movieIt() {
 
             //... so it's easier to just send one thing to the console.log and the logIt function
 
-            console.log(columnify(movieObj, { columns: ['DATA', 'VALUE'] }))
+            console.log(chalk.green(columnify(movieObj, {
+                showHeaders: false,
+                // columns: ['DATA', 'VALUE'], 
+                maxWidth: 75
+            })));
 
             // console.log(movieObj);
             logIt("Movie Search: " + JSON.stringify(movieObj));
 
-            // console.log("Title: " + data.Title);
-            // console.log("Year: " + data.Year);
-            // console.log("IMDB Rating: " + data.imdbRating);
-            // console.log("Rotten Tomatoes Rating: " + data.Ratings[1].Value);
-            // console.log("Country: " + data.Country);
-            // console.log("Language: " + data.Language);
-            // console.log("Plot: " + data.Plot);
-            // console.log("Actors: " + data.Actors);
         }
     });
 }
@@ -187,20 +182,18 @@ function concertIt() {
             let data = JSON.parse(body);
 
             let concertObj = {
-                Artist: args,
+                Artist: artist.replace(",", " "),
                 Venue: data[0].venue.name,
                 Location: data[0].venue.city,
                 Date: moment(data[0].datetime).format("MM/DD/YYYY"),
             }
 
             //... so it's easier to just send one thing to the console.log and the logIt function
-            console.log(concertObj);
+            console.log(chalk.green(columnify(concertObj, {
+                showHeaders: false,
+                maxWidth: 75
+            })));
             logIt("Concert Search: " + JSON.stringify(concertObj));
-
-            // console.log("Venue Name: " + data[0].venue.name);
-            // console.log("Venue Location: " + data[0].venue.city);
-            //Moment package used to tidy up datetime key
-            // console.log("Date of Event: " + moment(data[0].datetime).format("MM/DD/YYYY"));
 
         }
     });
@@ -210,7 +203,7 @@ function concertIt() {
 function spotifyIt() {
 
     //If you leave blank, search for the "The Sign"
-    if (args.length === 0) {
+    if (args.length === 0 || args === "null") {
         args = "The Sign Ace of Base";
 
         spotify.search({ type: 'track', query: args }, function (err, data) {
@@ -226,13 +219,12 @@ function spotifyIt() {
                 Album: JSON.stringify(theSign.album.name),
             }
 
-            console.log(columnify(theSignObj, { columns: ['DATA', 'VALUE'] }))
+            console.log(chalk.green(columnify(theSignObj, {
+                showHeaders: false,
+                maxWidth: 75
+            })));
             logIt("Spotify Search: " + JSON.stringify(theSignObj));
 
-            // console.log("Artist: " + JSON.stringify(theSign.album.artists[0].name));
-            // console.log("Song Name: " + JSON.stringify(theSign.name));
-            // console.log("Preview Link: " + JSON.stringify(theSign.preview_url));
-            // console.log("Album: " + JSON.stringify(theSign.album.name));
         });
 
     } else {
@@ -252,13 +244,12 @@ function spotifyIt() {
                 Album: JSON.stringify(song.album.name),
             }
 
-            console.log(columnify(songObj, { columns: ['DATA', 'VALUE'] }))
+            console.log(chalk.green(columnify(songObj, {
+                showHeaders: false,
+                maxWidth: 75
+            })));
             logIt("Spotify Search: " + JSON.stringify(songObj));
 
-            // console.log("Artist: " + JSON.stringify(song.album.artists[0].name));
-            // console.log("Song Name: " + JSON.stringify(song.name));
-            // console.log("Preview Link: " + JSON.stringify(song.preview_url));
-            // console.log("Album: " + JSON.stringify(song.album.name));
         });
     }
 
@@ -328,6 +319,72 @@ function logIt(response) {
     fs.appendFile('log.txt', response + "\n", function (err) {
         if (err) throw err;
         console.log("Data Logged Sucessfully")
+        searchAgain();
     })
 }
 
+//Hijacking the Weather Piece we did in class
+function askWhichOne(results) {
+    const places = results.map(l => l.location.name)
+    inquirer.prompt([{
+        type: 'list',
+        message: 'which one do you mean?',
+        name: 'place',
+        choices: places
+    }]).then(chosePlace => {
+        const finals = results.filter(r => r.location.name === chosePlace.place)
+        const final = finals[0]
+        console.log(`It's currently ${final.current.temperature} °F in  ${chosePlace.place}`)
+
+        if (final.current.feelslike < 65) {
+            console.log(`It feels like ${final.current.feelslike} °F there, better bring a jacket`)
+        } else {
+            console.log('It\'s nice enough out, bring sunglasses')
+        }
+    })
+}
+
+
+function askWhereToGo() {
+    inquirer.prompt([{
+        type: 'input',
+        message: 'Where do you want to go?',
+        name: 'location'
+    }]).then(response => {
+
+        weather.find({ search: response.location, degreeType: 'F' }, function (err, results) {
+            const places = results.map(l => l.location.name)
+            if (places.length > 1) {
+                askWhichOne(results)
+            } else if (places.length === 1) {
+
+                console.log(`I hear ${places[0]} is lovely this time of year`)
+            } else {
+                console.log('I haven\'t heard of that one, try somewhere else')
+                askWhereToGo()
+            }
+
+        })
+
+    })
+}
+
+function searchAgain() {
+    inquirer
+        .prompt([
+
+            {
+                type: "confirm",
+                message: "Would You Like To Search for Something Else?",
+                name: "goAgain"
+            },
+        ])
+        .then(function (answer) {
+            if (answer.goAgain === true) {
+                mainPrompt();
+            } else{
+                console.log("Thanks for choosing Liri5000 for all your searching needs. See you real soon!")
+            }
+        });
+
+}
