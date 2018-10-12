@@ -335,7 +335,7 @@ function askWhichOne(results) {
         const finals = results.filter(r => r.location.name === chosePlace.place)
         const final = finals[0]
         console.log(`It's currently ${final.current.temperature} °F in  ${chosePlace.place}`)
-        searchAgain();
+     
         if (final.current.feelslike < 65) {
             console.log(`It feels like ${final.current.feelslike} °F there, better bring a jacket`)
             searchAgain();
